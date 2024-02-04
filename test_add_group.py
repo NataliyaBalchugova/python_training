@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest
+from group import Group
 
 
 class TestAddGroup(unittest.TestCase):
@@ -16,7 +17,7 @@ class TestAddGroup(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, "admin", "secret")
         self.open_groups_page(wd)
-        self.create_group(wd, name="test", header="1234", footer="@#$%")
+        self.create_group(wd, Group(name="test", header="1234", footer="@#$%"))
         self.logout(wd)
         # time.sleep(10)
 
@@ -25,24 +26,27 @@ class TestAddGroup(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, "admin", "secret")
         self.open_groups_page(wd)
-        self.create_group(wd, name="", header="", footer="")
+        self.create_group(wd, Group(name="", header="", footer=""))
         self.logout(wd)
-    def open_home_page(self):
-        wd = self.open_home_page()
-        self.open_home_page(wd)
-        return wd
+        # time.sleep(10)
+
+    def open_home_page(self, wd):
+        wd.get("http://localhost/addressbook/")
+
     def login(self, wd, user_name, password):
         wd.find_element(By.NAME, "user").send_keys(user_name)
         wd.find_element(By.NAME, "pass").send_keys(password)
         wd.find_element(By.XPATH, "//input[@value='Login']").click()
-    def create_group(self, wd, name, header, footer):
+
+    def create_group(self, wd, group):
         # init group creation
         wd.find_element(By.XPATH, "//input[@value='New group']").click()
         # fill group form
-        wd.find_element(By.NAME, "group_name").send_keys(name)
-        wd.find_element(By.NAME, "group_header").send_keys(header)
-        wd.find_element(By.NAME, "group_footer").send_keys(footer)
+        wd.find_element(By.NAME, "group_name").send_keys(group.name)
+        wd.find_element(By.NAME, "group_header").send_keys(group.header)
+        wd.find_element(By.NAME, "group_footer").send_keys(group.footer)
         wd.find_element(By.XPATH, "//input[@value='Enter information']").click()
+
     def open_groups_page(self, wd):
         wd.find_element(By.LINK_TEXT, "groups").click()
 
