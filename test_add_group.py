@@ -12,28 +12,36 @@ class TestAddGroup(unittest.TestCase):
         self.wd.implicitly_wait(30)
 
     def test_add_group(self):
-        wd = self.open_home_page()
-        self.login(wd)
+        wd = self.wd
+        self.open_home_page(wd)
+        self.login(wd, "admin", "secret")
         self.open_groups_page(wd)
-        self.create_group(wd)
+        self.create_group(wd, name="test", header="1234", footer="@#$%")
         self.logout(wd)
         # time.sleep(10)
 
+    def test_add_empty_group(self):
+        wd = self.wd
+        self.open_home_page(wd)
+        self.login(wd, "admin", "secret")
+        self.open_groups_page(wd)
+        self.create_group(wd, name="", header="", footer="")
+        self.logout(wd)
     def open_home_page(self):
         wd = self.open_home_page()
         self.open_home_page(wd)
         return wd
-    def login(self, wd):
-        wd.find_element(By.NAME, "user").send_keys("admin")
-        wd.find_element(By.NAME, "pass").send_keys("secret")
+    def login(self, wd, user_name, password):
+        wd.find_element(By.NAME, "user").send_keys(user_name)
+        wd.find_element(By.NAME, "pass").send_keys(password)
         wd.find_element(By.XPATH, "//input[@value='Login']").click()
-    def create_group(self, wd):
+    def create_group(self, wd, name, header, footer):
         # init group creation
         wd.find_element(By.XPATH, "//input[@value='New group']").click()
         # fill group form
-        wd.find_element(By.NAME, "group_name").send_keys("test")
-        wd.find_element(By.NAME, "group_header").send_keys("1234")
-        wd.find_element(By.NAME, "group_footer").send_keys("@#$%")
+        wd.find_element(By.NAME, "group_name").send_keys(name)
+        wd.find_element(By.NAME, "group_header").send_keys(header)
+        wd.find_element(By.NAME, "group_footer").send_keys(footer)
         wd.find_element(By.XPATH, "//input[@value='Enter information']").click()
     def open_groups_page(self, wd):
         wd.find_element(By.LINK_TEXT, "groups").click()
