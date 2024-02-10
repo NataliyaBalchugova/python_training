@@ -6,7 +6,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">
-    <option name="requirementsPath" value="C:\Users\b9l4e\PycharmProjects\python_training\env\Scripts\python.exe" />
+    <option name="requirementsPath" value="C:\Users\b9l4e\PycharmProjects\python_training\env\Scripts\pip.exe" />
+    <option name="removeUnused" value="true" />
+    <option name="modifyBaseFiles" value="true" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="py.test" />
