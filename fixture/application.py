@@ -1,6 +1,6 @@
 from selenium import webdriver
 from fixture.session import SessionHelper
-from model.group import GroupHelper
+from fixture.group import GroupHelper
 
 class Application:
 
