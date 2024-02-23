@@ -7,10 +7,12 @@ class GroupHelper:
 
     def open_groups_page(self):
         wd = self.app.wd
-        wd.find_element(By.LINK_TEXT, "groups").click()
+        if not (wd.current_url.endswith("/group.php") and len(wd.find_elements(By.NAME, "new")) > 0):
+            wd.find_element(By.LINK_TEXT, "groups").click()
 
     def create(self, group):
         wd = self.app.wd
+        self.open_groups_page()
         wd.find_element(By.XPATH, "//input[@value='New group']").click()
         self.fill_group_form(group)
         wd.find_element(By.XPATH, "//input[@value='Enter information']").click()
@@ -52,3 +54,7 @@ class GroupHelper:
         # submit modification
         wd.find_element(By.NAME, "update").click()
 
+    def count(self):
+        wd = self.app.wd
+        self.open_groups_page()
+        return len(wd.find_elements(By.NAME, "selected[]"))
