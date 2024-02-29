@@ -1,4 +1,5 @@
 from model.group import Group
+from fixture.application import Application
 from random import randrange
 
 def test_delete_some_group(app):

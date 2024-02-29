@@ -7,7 +7,7 @@ class GroupHelper:
 
     def open_groups_page(self):
         wd = self.app.wd
-        if not (wd.current_url.endswith("/group.php") and len(wd.find_elements(By.NAME, "new")) > 0):
+        if not (wd.current_url.endswith("/group.php")):
             wd.find_element(By.LINK_TEXT, "groups").click()
 
     def create(self, group):
@@ -17,6 +17,11 @@ class GroupHelper:
         self.fill_group_form(group)
         wd.find_element(By.XPATH, "//input[@value='Enter information']").click()
         self.group_cache = None
+        self.return_to_groups_page()
+
+    def return_to_groups_page(self):
+        wd = self.app.wd
+        wd.find_element(By.LINK_TEXT, "group page").click()
 
     def fill_group_form(self, group):
         wd = self.app.wd
@@ -44,6 +49,7 @@ class GroupHelper:
         self.select_group_by_index(index)
         # submit deletion
         wd.find_element(By.NAME, "delete").click()
+        self.return_to_groups_page()
         self.group_cache = None
 
     def select_first_group(self):
@@ -65,11 +71,15 @@ class GroupHelper:
         self.fill_group_form(new_group_data)
         # submit modification
         wd.find_element(By.NAME, "update").click()
+        self.return_to_groups_page()
         self.group_cache = None
 
     def count(self):
         wd = self.app.wd
-        self.open_groups_page()
+        # if not (wd.current_url.endswith("/group.php") and len(wd.find_elements(By.NAME, "new")) > 0):
+        if not (wd.current_url.endswith("/group.php")):
+            self.open_groups_page()
+
         return len(wd.find_elements(By.NAME, "selected[]"))
 
     group_cache = None
@@ -77,7 +87,8 @@ class GroupHelper:
     def get_group_list(self):
         if self.group_cache is None:
             wd = self.app.wd
-            self.open_groups_page()
+            if not (wd.current_url.endswith("/group.php")):
+                self.open_groups_page()
             self.group_cache = []
             for element in wd.find_elements(By.CSS_SELECTOR, "span.group"):
                 text = element.text
