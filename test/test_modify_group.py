@@ -1,6 +1,6 @@
 from model.group import Group
 from random import randrange
-from fixture.application import Application
+
 
 def test_modify_group_name(app):
     if app.group.count() == 0:

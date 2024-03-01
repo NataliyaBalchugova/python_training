@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from model.group import Group
 
+
 class GroupHelper:
     def __init__(self, app):
         self.app = app
@@ -24,11 +25,9 @@ class GroupHelper:
         wd.find_element(By.LINK_TEXT, "group page").click()
 
     def fill_group_form(self, group):
-        wd = self.app.wd
         self.change_field_value("group_name", group.name)
         self.change_field_value("group_header", group.header)
         self.change_field_value("group_footer", group.footer)
-
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -41,7 +40,6 @@ class GroupHelper:
 
     def modify_first_group(self):
         self.delete_group_by_index(0)
-
 
     def delete_group_by_index(self, index):
         wd = self.app.wd
@@ -95,5 +93,3 @@ class GroupHelper:
                 id = element.find_element(By.NAME, "selected[]").get_attribute("value")
                 self.group_cache.append(Group(name=text, id=id))
         return list(self.group_cache)
-
-

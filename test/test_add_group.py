@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*
-import pytest
 from model.group import Group
-from fixture.application import Application
 
-@pytest.fixture()
-def app(request):
-    fixture = Application()
-    return fixture
 
 def test_add_group(app):
-    app.session.login(user_name="admin", password="secret")
     app.group.open_groups_page()
     old_groups = app.group.get_group_list()
     group = Group(name="test", header="1234", footer="@#$%")
@@ -29,4 +22,3 @@ def test_add_group(app):
 #    assert len(old_groups) + 1 == len(new_groups)
 #    old_groups.append(group)
 #    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
-

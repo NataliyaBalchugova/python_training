@@ -4,7 +4,7 @@ from fixture.application import Application
 fixture = None
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def app(request):
     global fixture
     if fixture is None:
@@ -13,7 +13,6 @@ def app(request):
         fixture.session.login(user_name="admin", password="secret")
     else:
         if not fixture.is_valid():
-            # fixture.destroy()
             fixture = Application()
             fixture.session.login(user_name="admin", password="secret")
     return fixture
