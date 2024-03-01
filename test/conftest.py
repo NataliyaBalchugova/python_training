@@ -7,6 +7,7 @@ fixture = None
 @pytest.fixture
 def app(request):
     global fixture
+    # checking the fixture for validity
     if fixture is None:
         fixture = Application()
         # login all tests

@@ -21,3 +21,22 @@ class ContactHelper:
         wd.find_element(By.NAME, "work").send_keys(contact.work)
         wd.find_element(By.XPATH, "//div[@id='content']/form/input[21]").click()
         wd.find_element(By.LINK_TEXT, "home").click()
+
+
+    def delete_first_contact(self):
+        #wd = self.app.wd
+        self.open_contact_page()
+        self.select_contact()
+        self.delete_contact()
+
+    def delete_contact(self):
+        wd = self.app.wd
+        # delete contact
+        wd.find_element(By.XPATH, "//input[@value='Delete']").click()
+        alert = wd.switch_to.alert
+        alert.accept()
+
+    def select_contact(self):
+        wd = self.app.wd
+        # select contact
+        wd.find_element(By.NAME, "selected[]").click()
