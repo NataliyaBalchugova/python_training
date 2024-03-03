@@ -39,7 +39,7 @@ class GroupHelper:
         self.delete_group_by_index(0)
 
     def modify_first_group(self):
-        self.delete_group_by_index(0)
+        self.modify_group_by_index(0)
 
     def delete_group_by_index(self, index):
         wd = self.app.wd

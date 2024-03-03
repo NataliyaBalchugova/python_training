@@ -40,3 +40,32 @@ class ContactHelper:
         wd = self.app.wd
         # select contact
         wd.find_element(By.NAME, "selected[]").click()
+
+    def modify_firstname_contact(self, new_contact_data):
+        wd = self.app.wd
+        # edit contact
+        wd.find_element(By.CSS_SELECTOR, "a[href='edit.php?id=66']").click()
+        # fill new data for firstname
+        self.fill_contact_form(new_contact_data)
+        # update contact
+
+        wd.find_element(By.XPATH, "//input[@value='Update']").click()
+        # return to contacts page
+        wd.find_element(By.LINK_TEXT, "home").click()
+
+    def fill_contact_form(self, contact):
+        self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("lastname", contact.lastname)
+        self.change_field_value("work", contact.work)
+
+    def change_field_value(self, field_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element(By.NAME, field_name).clear()
+            wd.find_element(By.NAME, field_name).send_keys(text)
+
+
+
+
+
+
