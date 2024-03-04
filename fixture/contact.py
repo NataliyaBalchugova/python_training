@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+import time
 
 
 class ContactHelper:
@@ -27,7 +28,7 @@ class ContactHelper:
         wd.find_element(By.NAME, "address").send_keys(contact.address)
         wd.find_element(By.NAME, "work").send_keys(contact.work)
         wd.find_element(By.XPATH, "//div[@id='content']/form/input[21]").click()
-        #wd.find_element(By.LINK_TEXT, "home").click()
+        wd.find_element(By.LINK_TEXT, "home").click()
 
     def delete_first_contact(self):
         self.open_contact_page()
@@ -62,6 +63,7 @@ class ContactHelper:
         # return to contacts page
         wd.find_element(By.LINK_TEXT, "home").click()
 
+
     def fill_contact_form(self, contact):
         self.change_field_value("firstname", contact.firstname)
         self.change_field_value("lastname", contact.lastname)
@@ -73,16 +75,17 @@ class ContactHelper:
             wd.find_element(By.NAME, field_name).clear()
             wd.find_element(By.NAME, field_name).send_keys(text)
 
-    def count_contacts(self):
-        wd = self.app.wd
-        self.open_contact_page()
-        # if not (wd.current_url.endswith("/group.php") and len(wd.find_elements(By.NAME, "new")) > 0):
-        # if not (wd.current_url.endswith("/group.php")):
-        # self.open_contact_page()
-        return len(wd.find_elements(By.NAME, "selected[]"))
+    # def count_contacts(self):
+    #     wd = self.app.wd
+    #     self.open_contact_page()
+    #     # if not (wd.current_url.endswith("/group.php") and len(wd.find_elements(By.NAME, "new")) > 0):
+    #     # if not (wd.current_url.endswith("/group.php")):
+    #     # self.open_contact_page()
+    #     return len(wd.find_elements(By.NAME, "selected[]"))
 
     def el_exist(self):
         wd = self.app.wd
+        self.open_contact_page()
         return (wd.find_elements(By.NAME, "selected[]"))
 
     # def numb_res(self):
