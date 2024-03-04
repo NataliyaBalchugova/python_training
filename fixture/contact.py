@@ -44,7 +44,8 @@ class ContactHelper:
     def modify_firstname_contact(self, new_contact_data):
         wd = self.app.wd
         # edit contact
-        wd.find_element(By.CSS_SELECTOR, "a[href='edit.php?id=66']").click()
+        wd.find_element(By.XPATH, "/html/body/div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img").click()
+        #wd.find_element(By.CSS_SELECTOR, "a[href='edit.php?id=66']").click()
         # fill new data for firstname
         self.fill_contact_form(new_contact_data)
         # update contact
