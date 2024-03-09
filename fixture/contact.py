@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from model.contact import Contact
 import time
 
 
@@ -87,6 +88,18 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_page()
         return (wd.find_elements(By.NAME, "selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.open_contact_page()
+        contacts = []
+        for element in wd.find_elements(By.CSS_SELECTOR, "#maintable > tbody > tr:nth-child(2) > td:nth-child(3)"):
+            text = element.text
+            id = wd.find_element(By.NAME, "selected[]").get_attribute("id")
+            contacts.append(Contact(firstname=text, id=id))
+        return contacts
+
+
 
     # def numb_res(self):
     #     wd = self.app.wd
