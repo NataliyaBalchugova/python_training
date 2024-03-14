@@ -8,6 +8,7 @@ from model.contact import Contact
 #     assert len(old_contacts) + 1 == len(new_contacts)
 
 def test_add_contact(app):
+
     old_contacts = app.contact.get_contact_list()
     app.contact.fill_contact(Contact(firstname="Alexandr", lastname="Ponomarev", work="System Administrator", address="Demakova, 5"))
     assert len(old_contacts) + 1 == app.contact.count_contacts()

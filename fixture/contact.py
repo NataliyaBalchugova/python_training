@@ -33,36 +33,52 @@ class ContactHelper:
         wd.find_element(By.LINK_TEXT, "home").click()
         self.contact_cache = None
 
-    def delete_first_contact(self):
+    def delete_contact_by_index(self, index):
         self.open_contact_page()
-        self.select_contact()
-        print(f'before {len(self.contact_cache)}')
+        self.select_contact_by_index(index)
+        #print(f'before {len(self.contact_cache)}')
         self.delete_contact()
+
+    def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def modify_first_contact(self, index, new_contact_data):
+        wd = self.app.wd
+        self.delete_contact_by_index(0)
 
 
     def delete_contact(self):
         wd = self.app.wd
         # delete contact
-        print('we are deleting first contact')
+        #print('we are deleting first contact')
         wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         alert = wd.switch_to.alert
         alert.accept()
         self.contact_cache = None
         self.open_contact_page()
 
-    def select_contact(self):
+    def select_contact_by_index(self, index):
         wd = self.app.wd
         # select contact
-        wd.find_element(By.NAME, "selected[]").click()
+        # выбрали случайный контакт на основании случайного индекса
+        selected_contact = wd.find_elements(By.NAME, "selected[]")[index]
+        # кликнули по его чекбоксу
+        selected_contact.click()
+        # получаем айди выбраного контакта
+        selected_id = selected_contact.get_attribute('id')
+        # возвращаем числовое значение айди выбраного контакта
+        return selected_id
 
-
-    def modify_firstname_contact(self, new_contact_data):
+    def modify_contact_by_index(self, new_contact_data, index):
         wd = self.app.wd
         self.open_contact_page()
         # edit contact
-        # edit_link = wd.find_element(By.NAME, 'selected[]').get_attribute('id')
-        # wd.get(f"http://localhost/addressbook/edit.php?id={edit_link}")
-        wd.find_element(By.XPATH, '//img[@title="Edit"]').click()
+        # selected_id = self.select_contact_by_index(index)
+        wd.get(f"http://localhost/addressbook/edit.php?id={self.select_contact_by_index(index)}")
+        # wd.find_element(By.XPATH, '/html/body/div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a')[index].click()
+        # wd.find_elements(By.XPATH, '//img[@title="Edit"]')[index].click()
+        # link = f"edit.php?={selected_id}"
+        # wd.find_element(By.XPATH, f'//img[@href={link}]').click()
         # fill new data for firstname
         self.fill_contact_form(new_contact_data)
         # update contact
