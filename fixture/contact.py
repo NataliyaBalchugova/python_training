@@ -129,6 +129,11 @@ class ContactHelper:
         return list(self.contact_cache)
 
 
+    def get_contact_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_index.get_attribute("value")
+
+
     # def numb_res(self):
     #     wd = self.app.wd
     #     return (wd.find_element(By.ID, 'search_count'))
