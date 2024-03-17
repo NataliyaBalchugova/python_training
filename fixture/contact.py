@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from model.contact import Contact
 from time import sleep
+import re
 
 
 class ContactHelper:
@@ -186,3 +187,18 @@ class ContactHelper:
     #     wd = self.app.wd
     #     return (wd.find_element(By.ID, 'search_count'))
 
+    def get_contact_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_contact_view_by_index(index)
+        text = wd.find_element(By.ID, "content").text
+        homephone = re.search("H: (.*)", text).group(1)
+        workphone = re.search("W: (.*)", text).group(1)
+        mobilephone = re.search("M: (.*)", text).group(1)
+        secondaryphone = re.search("P: (.*)", text).group(1)
+        return Contact(homephone=homephone, mobilephone=mobilephone,
+                       workphone=workphone, secondaryphone=secondaryphone)
+
+    def open_contact_view_by_index(self, index):
+        wd = self.app.wd
+        self.open_contact_page()
+        wd.get(f"http://localhost/addressbook/view.php?id={self.select_contact_by_index(index)}")
