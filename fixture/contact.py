@@ -148,17 +148,13 @@ class ContactHelper:
                 cells = row.find_elements(By.TAG_NAME, "td")
                 firstname = cells[1].text
                 lastname = cells[2].text
-                all_phones = cells[5].text.splitlines()
+                all_phones = cells[5].text
                 # id = cells[0].find_elements(By.NAME, "selected[]")
                 id = wd.find_element(By.NAME, "selected[]").get_attribute("id")
                 self.contact_cache.append(Contact(firstname=firstname,
                                                   lastname=lastname,
                                                   id=id,
-                                                  homephone=all_phones[0],
-                                                  mobilephone=all_phones[1],
-                                                  workphone=all_phones[2],
-                                                  secondaryphone=all_phones[3])
-                                          )
+                                                  all_phones_from_home_page=all_phones))
                 # print('break after 1st row')
                 #break
         return list(self.contact_cache)
