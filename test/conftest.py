@@ -1,6 +1,8 @@
 import pytest
 from fixture.application import Application
 
+
+
 fixture = None
 
 
@@ -9,7 +11,8 @@ def app(request):
     global fixture
     # checking the fixture for validity
     if fixture is None:
-        fixture = Application()
+        browser = request.config.getoption("--browser")
+        fixture = Application(browser=browser)
         # login all tests
         fixture.session.login(user_name="admin", password="secret")
     else:
@@ -28,3 +31,11 @@ def stop(request):
             fixture.destroy()
 
     request.addfinalizer(fin)
+
+
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="firefox")
+
+
+
+
