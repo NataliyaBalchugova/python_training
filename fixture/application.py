@@ -3,7 +3,6 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-
 from fixture.session import SessionHelper
 from fixture.contact import ContactHelper
 from fixture.group import GroupHelper
@@ -32,8 +31,6 @@ class Application:
             return True
         except:
             return False
-
-
 
 
     def open_home_page(self):
