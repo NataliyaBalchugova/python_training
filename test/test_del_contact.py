@@ -8,7 +8,7 @@ def test_del_some_contact(app):
         pass
     else:
         #print('\n0 contacts on page, create new one')
-        app.contact.create_contact(Contact(firstname="Alexandr", lastname="Ponomarev", work="System Administrator",
+        app.contact.create_contact(Contact(firstname="Alexandr", lastname="Ponomarev", work="S1212",
                                            address="Demakova, 5"))
     old_contacts = app.contact.get_contact_list()
     # random index

@@ -22,7 +22,12 @@ class ContactHelper:
         wd.find_element(By.NAME, "home").send_keys(contact.homephone)
         wd.find_element(By.NAME, "mobile").send_keys(contact.mobilephone)
         wd.find_element(By.NAME, "phone2").send_keys(contact.secondaryphone)
+        wd.find_element(By.NAME, "email").send_keys(contact.first_email)
+        wd.find_element(By.NAME, "email2").send_keys(contact.second_email)
+        wd.find_element(By.NAME, "email3").send_keys(contact.third_email)
+        #sleep(3)
         wd.find_element(By.XPATH, "//div[@id='content']/form/input[21]").click()
+        #sleep(3)
         wd.find_element(By.LINK_TEXT, "home").click()
         self.contact_cache = None
 
@@ -36,6 +41,9 @@ class ContactHelper:
         wd.find_element(By.NAME, "home").send_keys(contact.homephone)
         wd.find_element(By.NAME, "mobile").send_keys(contact.mobilephone)
         wd.find_element(By.NAME, "phone2").send_keys(contact.secondaryphone)
+        wd.find_element(By.NAME, "email").send_keys(contact.first_email)
+        wd.find_element(By.NAME, "email2").send_keys(contact.second_email)
+        wd.find_element(By.NAME, "email3").send_keys(contact.third_email)
         wd.find_element(By.XPATH, "//div[@id='content']/form/input[21]").click()
         wd.find_element(By.LINK_TEXT, "home").click()
         self.contact_cache = None
@@ -103,6 +111,10 @@ class ContactHelper:
         self.change_field_value("mobile", contact.mobilephone)
         self.change_field_value("work", contact.workphone)
         self.change_field_value("phone2", contact.secondaryphone)
+        self.change_field_value("email", contact.first_email)
+        self.change_field_value("email2", contact.second_email)
+        self.change_field_value("email3", contact.third_email)
+
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -149,12 +161,14 @@ class ContactHelper:
                 firstname = cells[1].text
                 lastname = cells[2].text
                 all_phones = cells[5].text
+                all_emails = cells[4].text
                 # id = cells[0].find_elements(By.NAME, "selected[]")
                 id = wd.find_element(By.NAME, "selected[]").get_attribute("id")
                 self.contact_cache.append(Contact(firstname=firstname,
                                                   lastname=lastname,
                                                   id=id,
-                                                  all_phones_from_home_page=all_phones))
+                                                  all_phones_from_home_page=all_phones,
+                                                  all_emails_from_home_page=all_emails))
                 # print('break after 1st row')
                 #break
         return list(self.contact_cache)
@@ -170,9 +184,14 @@ class ContactHelper:
         workphone = wd.find_element(By.NAME, "work").get_attribute("value")
         mobilephone = wd.find_element(By.NAME, "mobile").get_attribute("value")
         secondaryphone = wd.find_element(By.NAME, "phone2").get_attribute("value")
+        first_email = wd.find_element(By.NAME, "email").get_attribute("value")
+        second_email = wd.find_element(By.NAME, "email2").get_attribute("value")
+        third_email = wd.find_element(By.NAME, "email3").get_attribute("value")
         return Contact(firstname=firstname, lastname=lastname, id=id,
                        homephone=homephone, mobilephone=mobilephone,
-                       workphone=workphone, secondaryphone=secondaryphone)
+                       workphone=workphone, secondaryphone=secondaryphone,
+                       first_email=first_email, second_email=second_email, third_email=third_email
+                       )
 
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
@@ -191,8 +210,12 @@ class ContactHelper:
         workphone = re.search("W: (.*)", text).group(1)
         mobilephone = re.search("M: (.*)", text).group(1)
         secondaryphone = re.search("P: (.*)", text).group(1)
+        first_email = wd.find_element(By.XPATH, "/html/body/div/div[4]/a[1]").text
+        second_email = wd.find_element(By.XPATH, "/html/body/div/div[4]/a[2]").text
+        third_email = wd.find_element(By.XPATH, "/html/body/div/div[4]/a[3]").text
         return Contact(homephone=homephone, mobilephone=mobilephone,
-                       workphone=workphone, secondaryphone=secondaryphone)
+                       workphone=workphone, secondaryphone=secondaryphone,
+                       first_email=first_email, second_email=second_email, third_email=third_email)
 
     def open_contact_view_by_index(self, index):
         wd = self.app.wd
