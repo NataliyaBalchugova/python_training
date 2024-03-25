@@ -1,24 +1,24 @@
 import pytest
 from fixture.application import Application
-
+import json
 
 
 fixture = None
-
+target = None
 
 @pytest.fixture
 def app(request):
     global fixture
+    global target
     browser = request.config.getoption("--browser")
-    base_url = request.config.getoption("--baseUrl")
+    if target is None:
+        with open(request.config.getoption("--target")) as config_file:
+         target = json.load(config_file)
     # checking the fixture for validity
-    if fixture is None:
-        fixture = Application(browser=browser, base_url=base_url)
+    if fixture is None or not fixture.is_valid():
+        fixture = Application(browser=browser, base_url=target["baseUrl"])
         # login all tests
-        fixture.session.login(user_name="admin", password="secret")
-    else:
-        if not fixture.is_valid():
-            fixture = Application(browser=browser, base_url=base_url)
+    fixture.session.login(user_name=target["username"], password=target["password"])
     # fixture.session.login(user_name="admin", password="secret")
     return fixture
 
