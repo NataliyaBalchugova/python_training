@@ -8,6 +8,7 @@ import jsonpickle
 fixture = None
 target = None
 
+
 @pytest.fixture
 def app(request):
     global fixture
@@ -52,14 +53,12 @@ def pytest_generate_tests(metafunc):
             metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
 
 
-
 def load_from_module(module):
     return importlib.import_module("data.%s" % module).testdata
+
 
 def load_from_json(file):
     # C:\Users\b9l4e\PycharmProjects\python_training\test\groups.json
     #file = os.path.join(os.path.dirname(os.path.abspath(__file__)), file)
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "%s.json" % file)) as f:
         return jsonpickle.decode(f.read())
-
-

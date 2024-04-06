@@ -3,7 +3,7 @@ from model.group import Group
 
 def test_add_group(app, json_groups):
     group = json_groups
-    print(group)
+    #print(group)
     app.group.open_groups_page()
     old_groups = app.group.get_group_list()
     app.group.create(group)

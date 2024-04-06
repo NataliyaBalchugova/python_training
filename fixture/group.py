@@ -59,14 +59,14 @@ class GroupHelper:
         wd = self.app.wd
         wd.find_elements(By.NAME, "selected[]")[index].click()
 
-    def modify_group_by_index(self, index, new_group_data):
+    def modify_group_by_index(self, index, group):
         wd = self.app.wd
         self.open_groups_page()
         self.select_group_by_index(index)
         # open modification form
         wd.find_element(By.NAME, "edit").click()
         # fill group form
-        self.fill_group_form(new_group_data)
+        self.fill_group_form(group)
         # submit modification
         wd.find_element(By.NAME, "update").click()
         self.return_to_groups_page()
