@@ -5,7 +5,6 @@ json_groups = generate()
 
 def test_add_group(app, json_groups):
     group = json_groups
-    #print(group)
     app.group.open_groups_page()
     old_groups = app.group.get_group_list()
     app.group.create(group)
