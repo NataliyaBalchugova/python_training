@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from model.group import Group
+#from time import sleep
 
 
 class GroupHelper:
@@ -106,3 +107,17 @@ class GroupHelper:
     def select_group_by_id(self, id):
         wd = self.app.wd
         wd.find_element(By.CSS_SELECTOR, "input[value='%s']" % id).click()
+
+
+    def modify_group_by_id(self, id, group):
+        wd = self.app.wd
+        self.open_groups_page()
+        self.select_group_by_id(id)
+        # open modification form
+        wd.find_element(By.NAME, "edit").click()
+        # fill group form
+        self.fill_group_form(group)
+        # submit modification
+        wd.find_element(By.NAME, "update").click()
+        self.return_to_groups_page()
+        self.group_cache = None
