@@ -257,3 +257,12 @@ class ContactHelper:
         # return to contacts page
         wd.find_element(By.LINK_TEXT, "home").click()
         self.contact_cache = None
+
+    def add_contact_in_group(self, id):
+        wd = self.app.wd
+        # открываем страницу контактов
+        self.open_contact_page()
+        # кликаем на чек-бокс
+        self.select_contact_by_id(id)
+        # add to - добавляем контакт к групп
+        wd.find_element(By.XPATH, "//input[@value='Add to']").click()
