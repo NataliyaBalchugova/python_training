@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 from model.contact import Contact
-from time import sleep
 import re
 
 
@@ -51,21 +50,17 @@ class ContactHelper:
     def delete_contact_by_index(self, index):
         self.open_contact_page()
         self.select_contact_by_index(index)
-        #print(f'before {len(self.contact_cache)}')
         self.delete_contact()
 
     def delete_first_contact(self):
         self.delete_contact_by_index(0)
 
-    def modify_first_contact(self, index, new_contact_data):
-        wd = self.app.wd
+    def modify_first_contact(self):
         self.delete_contact_by_index(0)
-
 
     def delete_contact(self):
         wd = self.app.wd
         # delete contact
-        #print('we are deleting first contact')
         wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         alert = wd.switch_to.alert
         alert.accept()
@@ -75,34 +70,22 @@ class ContactHelper:
     def select_contact_by_index(self, index):
         wd = self.app.wd
         # select contact
-        # выбрали случайный контакт на основании случайного индекса
         selected_contact = wd.find_elements(By.NAME, "selected[]")[index]
-        # кликнули по его чекбоксу
         selected_contact.click()
-        # получаем айди выбраного контакта
         selected_id = selected_contact.get_attribute('id')
-        # возвращаем числовое значение айди выбраного контакта
         return selected_id
 
     def modify_contact_by_index(self, new_contact_data, index):
         wd = self.app.wd
         self.open_contact_page()
         # edit contact
-        # selected_id = self.select_contact_by_index(index)
         wd.get(f"http://localhost/addressbook/edit.php?id={self.select_contact_by_index(index)}")
-        # wd.find_element(By.XPATH, '/html/body/div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a')[index].click()
-        # wd.find_elements(By.XPATH, '//img[@title="Edit"]')[index].click()
-        # link = f"edit.php?={selected_id}"
-        # wd.find_element(By.XPATH, f'//img[@href={link}]').click()
-        # fill new data for firstname
         self.fill_contact_form(new_contact_data)
         # update contact
-        # /html/body/div/div[4]/form[1]/input[1]
         wd.find_element(By.XPATH, "//input[@value='Update']").click()
         # return to contacts page
         wd.find_element(By.LINK_TEXT, "home").click()
         self.contact_cache = None
-
 
     def fill_contact_form(self, contact):
         self.change_field_value("firstname", contact.firstname)
@@ -115,7 +98,6 @@ class ContactHelper:
         self.change_field_value("email2", contact.second_email)
         self.change_field_value("email3", contact.third_email)
 
-
     def change_field_value(self, field_name, text):
         wd = self.app.wd
         if text is not None:
@@ -125,10 +107,6 @@ class ContactHelper:
     def count_contacts(self):
         wd = self.app.wd
         self.open_contact_page()
-        # if not (wd.current_url.endswith("/group.php") and len(wd.find_elements(By.NAME, "new")) > 0):
-        # if not (wd.current_url.endswith("/group.php")):
-        # self.open_contact_page()
-        # return len(wd.find_elements(By.NAME, "selected[]"))
         return int(wd.find_element(By.XPATH, "/html/body/div/div[4]/label/strong/span").text)
 
     def el_exist(self):
@@ -137,20 +115,7 @@ class ContactHelper:
         return (wd.find_elements(By.NAME, "selected[]"))
 
     contact_cache = None
-#это мой варик из домашки
-    # def get_contact_list(self):
-    #     if self.contact_cache is None:
-    #         wd = self.app.wd
-    #         self.open_contact_page()
-    #         self.contact_cache = []
-    #         #for element in wd.find_elements(By.CSS_SELECTOR, "#maintable > tbody > tr:nth-child(2) > td:nth-child(3)"):
-    #         for element in wd.find_elements(By.NAME, "selected[]"):
-    #             text = element.text
-    #             id = wd.find_element(By.NAME, "selected[]").get_attribute("id")
-    #             self.contact_cache.append(Contact(firstname=text, id=id))
-    #     return list(self.contact_cache)
 
-# это варик Алексея Баранцева
     def get_contact_list(self):
         if self.contact_cache is None:
             wd = self.app.wd
@@ -172,7 +137,6 @@ class ContactHelper:
                 # print('break after 1st row')
                 #break
         return list(self.contact_cache)
-
 
     def get_contact_info_from_edit_page(self, index):
         wd = self.app.wd
@@ -197,10 +161,6 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_page()
         wd.get(f"http://localhost/addressbook/edit.php?id={self.select_contact_by_index(index)}")
-
-    # def numb_res(self):
-    #     wd = self.app.wd
-    #     return (wd.find_element(By.ID, 'search_count'))
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
@@ -232,27 +192,16 @@ class ContactHelper:
         wd = self.app.wd
         # select contact
         selected_contact = wd.find_element(By.NAME, "selected[]")
-        # кликнули по его чекбоксу
         selected_contact.click()
-        # получаем айди выбраного контакта
         selected_id = selected_contact.get_attribute('id')
-        # возвращаем числовое значение айди выбраного контакта
         return selected_id
 
     def modify_contact_by_id(self, new_contact_data, id):
         wd = self.app.wd
         self.open_contact_page()
-        # edit contact
-        # selected_id = self.select_contact_by_index(index)
         wd.get(f"http://localhost/addressbook/edit.php?id={self.select_contact_by_id(id)}")
-        # wd.find_element(By.XPATH, '/html/body/div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a')[index].click()
-        # wd.find_elements(By.XPATH, '//img[@title="Edit"]')[index].click()
-        # link = f"edit.php?={selected_id}"
-        # wd.find_element(By.XPATH, f'//img[@href={link}]').click()
-        # fill new data for firstname
         self.fill_contact_form(new_contact_data)
         # update contact
-        # /html/body/div/div[4]/form[1]/input[1]
         wd.find_element(By.XPATH, "//input[@value='Update']").click()
         # return to contacts page
         wd.find_element(By.LINK_TEXT, "home").click()
